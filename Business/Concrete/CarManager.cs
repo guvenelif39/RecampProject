@@ -18,7 +18,7 @@ namespace Business.Concrete
 
         public void Add(Car car)
         {
-            Console.WriteLine("Araba başarıyla eklendi.");
+             _carDal.Add(car);
         }
 
         public List<Car> GetAll()
@@ -26,6 +26,6 @@ namespace Business.Concrete
             return _carDal.GetAll();
         }
 
-        
+       
     }
 }
