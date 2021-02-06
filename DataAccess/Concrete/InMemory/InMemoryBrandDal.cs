@@ -2,33 +2,34 @@
 using Entities.Concrete;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
 
-namespace DataAccess.Concrete
+namespace DataAccess.Concrete.InMemory
 {
-    public class EntityFramework : ICarDal
+    public class InMemoryBrandDal : IBrandDal
     {
-        public void Add(Car car)
+        public void Add(Brand entity)
         {
             throw new NotImplementedException();
         }
 
-        public void Delete(Car car)
+        public void Delete(Brand entity)
         {
             throw new NotImplementedException();
         }
 
-        public List<Car> GetAll()
+        public Brand Get(Expression<Func<Brand, bool>> filter)
         {
             throw new NotImplementedException();
         }
 
-        public List<Car> GetById(int Id)
+        public List<Brand> GetAll(Expression<Func<Brand, bool>> filter = null)
         {
             throw new NotImplementedException();
         }
 
-        public void Update(Car car)
+        public void Update(Brand entity)
         {
             throw new NotImplementedException();
         }

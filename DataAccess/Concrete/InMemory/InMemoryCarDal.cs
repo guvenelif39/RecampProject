@@ -3,6 +3,7 @@ using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace DataAccess.Concrete
@@ -15,9 +16,9 @@ namespace DataAccess.Concrete
         {
             _car = new List<Car>
             {
-                new Car{Id=1,BrandId=1,ColorId=1,ModelYear=2011,DailyPrice=100000,Description="36.000 km"},
-                new Car{Id=2,BrandId=1,ColorId=1,ModelYear=2017,DailyPrice=98000,Description="45.000 km"},
-                new Car{Id=3,BrandId=2,ColorId=2,ModelYear=2020,DailyPrice=190000,Description="0 km"},
+                new Car{Id=1,BrandId=1,ColorId=1,ModelYear="2011",DailyPrice=100000,Descriptions="36.000 km"},
+                new Car{Id=2,BrandId=1,ColorId=1,ModelYear="2017",DailyPrice=98000,Descriptions="45.000 km"},
+                new Car{Id=3,BrandId=2,ColorId=2,ModelYear="2020",DailyPrice=190000,Descriptions="0 km"},
             };
         }
 
@@ -33,9 +34,19 @@ namespace DataAccess.Concrete
             _car.Remove(carToDelete);
         }
 
+        public List<Car> Get(Expression<Func<Car, bool>> filter)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<Car> GetAll()
         {
             return _car;
+        }
+
+        public List<Car> GetAll(Expression<Func<Car, bool>> filter = null)
+        {
+            throw new NotImplementedException();
         }
 
         public List<Car> GetById(int Id)
@@ -52,8 +63,13 @@ namespace DataAccess.Concrete
             car.ColorId = carToUpdate.ColorId;
             car.ModelYear = carToUpdate.ModelYear;
             car.DailyPrice = carToUpdate.DailyPrice;
-            car.Description = carToUpdate.Description;
+            car.Descriptions = carToUpdate.Descriptions;
 
+        }
+
+        Car IEntityRepository<Car>.Get(Expression<Func<Car, bool>> filter)
+        {
+            throw new NotImplementedException();
         }
     }
 }
