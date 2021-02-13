@@ -1,5 +1,7 @@
-﻿using DataAccess.Abstract;
+﻿using Core.DataAccess.EntityFramework;
+using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.DTO;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,55 +11,31 @@ using System.Text;
 
 namespace DataAccess.Concrete.EntityFramework
 {
-    public class EfCarDal : ICarDal
+    public class EfCarDal : EfEntityRepositoryBase<Car, RecampDatabaseContext>, ICarDal
     {
-        public void Add(Car entity)
+        public List<ProjectDetailDto> GetCarDetails()
         {
-            using (RecampDatabaseContext context = new RecampDatabaseContext())
+            using (RecampDatabaseContext context= new RecampDatabaseContext())
             {
-                var addedEntity = context.Entry(entity);
-                addedEntity.State = EntityState.Added;
-                context.SaveChanges();
-                Console.WriteLine("Ekleme İşlemi Başarılı.");
+                var result = from c in context.Cars
+                             join b in context.Brands
+                             on c.BrandId equals b.BrandId
+                             join cc in context.Colors
+                             on c.ColorId equals cc.ColorId
+                             select new ProjectDetailDto
+                             {
+                                 CarName= c.CarName,
+                                 BrandName = b.BrandName,
+                                 ColorName = cc.ColorName,
+                                 DailyPrice = c.DailyPrice
+                             };
+                return result.ToList();
             }
+                        
+
+                         
         }
 
-        public void Delete(Car entity)
-        {
-            using (RecampDatabaseContext context = new RecampDatabaseContext())
-            {
-                var deletedEntity = context.Entry(entity);
-                deletedEntity.State = EntityState.Deleted;
-                context.SaveChanges();
-                Console.WriteLine("Silme İşlemi Başarılı.");
-            }
-        }
-
-        public Car Get(Expression<Func<Car, bool>> filter)
-        {
-            using (RecampDatabaseContext context = new RecampDatabaseContext())
-            {
-                return context.Set<Car>().SingleOrDefault(filter);
-            }
-        }
-
-        public List<Car> GetAll(Expression<Func<Car, bool>> filter = null)
-        {
-            using (RecampDatabaseContext context = new RecampDatabaseContext())
-            {
-                return filter == null ? context.Set<Car>().ToList() : context.Set<Car>().Where(filter).ToList();
-            }
-        }
-
-        public void Update(Car entity)
-        {
-            using (RecampDatabaseContext context = new RecampDatabaseContext())
-            {
-                var updatedEntity = context.Entry(entity);
-                updatedEntity.State = EntityState.Modified;
-                context.SaveChanges();
-                Console.WriteLine("Güncelleme İşlemi Başarılı.");
-            }
-        }
+        
     }
 }

@@ -1,6 +1,9 @@
 ﻿using Business.Abstract;
+using Business.Constant;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.DTO;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -16,46 +19,60 @@ namespace Business.Concrete
             _carDal = car;
         }
 
-        public void Add(Car car)
+        public IResult Add(Car car)
         {
-            if (car.DailyPrice>0)
+            if (car.DailyPrice>0 && car.CarName.Length>=2)
             {
                 _carDal.Add(car);
+                return new SuccessResult(Messages.SuccessAdded);
+            }
+               
+             return new ErrorResult(Messages.FailMessage);
+            
+        }
+
+        public IResult Delete(Car car)
+        {
+            _carDal.Delete(car);
+            return new SuccessResult(Messages.SuccessDeleted);
+        }
+
+        public IDataResult<List<Car>> GetAll()
+        {
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(), Messages.SuccessMessage);
+        }
+
+        public IDataResult<List<Car>> GetCarsByBrandId(int brandId)
+        {
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(p => p.BrandId == brandId), Messages.SuccessMessage);
+        }
+
+        public IDataResult<List<Car>> GetCarsByColorId(int colorId)
+        {
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(p => p.ColorId == colorId), Messages.SuccessMessage);
+        }
+
+        public IDataResult<Car> GetId(int id)
+        {
+            return new SuccessDataResult<Car>(_carDal.Get(p => p.CarId == id), Messages.SuccessMessage);
+        }
+
+        public IDataResult<List<ProjectDetailDto>> projectDetailDtos(Car car)
+        {
+           return new SuccessDataResult<List<ProjectDetailDto>>(_carDal.GetCarDetails(),Messages.SuccessMessage);
+        }
+
+        public IResult Update(Car car)
+        {
+            if (car.CarName.Length>=2)
+            {
+                _carDal.Update(car);
+               return new SuccessResult(Messages.SuccessUpdated);
             }
             else
             {
-                Console.WriteLine("Günlük fiyat için sıfırdan büyük değer giriniz.");
+                return new ErrorResult(Messages.FailMessage);
             }
-        }
-
-        public void Delete(Car car)
-        {
-            _carDal.Delete(car);
-        }
-
-        public List<Car> GetAll()
-        {
-            return _carDal.GetAll();
-        }
-
-        public List<Car> GetCarsByBrandId(int brandId)
-        {
-            return _carDal.GetAll(p => p.BrandId == brandId);
-        }
-
-        public List<Car> GetCarsByColorId(int colorId)
-        {
-            return _carDal.GetAll(p => p.ColorId == colorId);
-        }
-
-        public Car GetId(int id)
-        {
-            return _carDal.Get(p => p.Id == id);
-        }
-
-        public void Update(Car car)
-        {
-            _carDal.Update(car);
         }
 
     }
