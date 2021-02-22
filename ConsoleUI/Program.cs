@@ -14,11 +14,11 @@ namespace ConsoleUI
             UserManager userManager = new UserManager(new EfUserDal());
             RentalManager rentalManager = new RentalManager(new EfRentalDal());
 
-            //RentalAddTest(rentalManager);
+            RentalAddTest(rentalManager);
             //UserAddTest(userManager);
             //UserDeleteTest(userManager);
 
-            GetRentalDetailDtoTest(rentalManager);
+            //GetRentalDetailDtoTest(rentalManager);
         }
 
         private static void GetRentalDetailDtoTest(RentalManager rentalManager)
@@ -49,7 +49,7 @@ namespace ConsoleUI
 
         private static void RentalAddTest(RentalManager rentalManager)
         {
-            rentalManager.Add(new Rental { CarId = 2, CustomerId = 1, RentDate = DateTime.Now, ReturnDate = null });
+            rentalManager.Add(new Rental { CarId = 6, CustomerId = 1, RentDate = DateTime.Now, ReturnDate = null });
             foreach (var rental in rentalManager.GetAll().Data)
             {
                 Console.WriteLine(rental.CarId);

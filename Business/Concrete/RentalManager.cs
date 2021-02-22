@@ -6,6 +6,7 @@ using Entities.Concrete;
 using Entities.DTO;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Business.Concrete
@@ -21,27 +22,17 @@ namespace Business.Concrete
 
         public IResult Add(Rental rental)
         {
-            if (_rentalDal.GetAll(p => p.CarId == rental.CarId) == null)
+            var result = _rentalDal.GetAll(p => p.CarId == rental.CarId && p.ReturnDate > DateTime.Now).ToList();
+            if (result.Count != 0)
+            {
+                return new ErrorResult(Messages.FailMessage);
+            }
+            else
             {
                 _rentalDal.Add(rental);
                 return new SuccessResult(Messages.SuccessAdded);
             }
-            else
-            {
-                var results = _rentalDal.GetAll(p => p.CarId == rental.CarId);
-                foreach (var result in results)
-                {
-                    if (result.ReturnDate != null && result.ReturnDate < rental.RentDate)
-                    {
-                        _rentalDal.Add(rental);
-                        return new SuccessResult(Messages.SuccessAdded);
-                    }
 
-                }
-
-            }
-            return new ErrorResult(Messages.FailMessage);
-            
         }
 
         public IResult Delete(Rental rental)
