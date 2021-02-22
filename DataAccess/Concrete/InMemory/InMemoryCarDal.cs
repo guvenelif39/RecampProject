@@ -56,12 +56,12 @@ namespace DataAccess.Concrete
             return _car.Where(p => p.CarId == Id).ToList();
         }
 
-        public List<ProjectDetailDto> GetCarDetails()
+        public List<CarDetailDto> GetCarDetails()
         {
             throw new NotImplementedException();
         }
 
-        public List<ProjectDetailDto> GetProductDetails()
+        public List<CarDetailDto> GetProductDetails()
         {
             throw new NotImplementedException();
         }

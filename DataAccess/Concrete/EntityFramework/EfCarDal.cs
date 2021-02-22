@@ -13,7 +13,7 @@ namespace DataAccess.Concrete.EntityFramework
 {
     public class EfCarDal : EfEntityRepositoryBase<Car, RecampDatabaseContext>, ICarDal
     {
-        public List<ProjectDetailDto> GetCarDetails()
+        public List<CarDetailDto> GetCarDetails()
         {
             using (RecampDatabaseContext context= new RecampDatabaseContext())
             {
@@ -22,7 +22,7 @@ namespace DataAccess.Concrete.EntityFramework
                              on c.BrandId equals b.BrandId
                              join cc in context.Colors
                              on c.ColorId equals cc.ColorId
-                             select new ProjectDetailDto
+                             select new CarDetailDto
                              {
                                  CarName= c.CarName,
                                  BrandName = b.BrandName,
