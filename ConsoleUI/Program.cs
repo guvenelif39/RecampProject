@@ -14,25 +14,21 @@ namespace ConsoleUI
             BrandManager brandManager = new BrandManager(new EfBrandDal());
             CarManager carManager = new CarManager(new EfCarDal());
             ColorManager colorManager = new ColorManager(new EfColorDal());
+            RentalManager rentalManager = new RentalManager(new EfRentalDal());
+            CustomerManager customer = new CustomerManager(new EfCustomerDal());
 
-
-
-            //Console.WriteLine("*************RENK SEÇENEKLERİ*************");
-            //foreach (var color in colorManager.GetAll().Data)
-            //{
-            //    Console.WriteLine(color.ColorName);
-            //}
-
-            Console.WriteLine("***********ARABA İSİMLERİ************");
-            foreach (var car in carManager.GetAll().Data)
+            rentalManager.Add(new Rental { CarId = 2 , CustomerId=1, RentDate=DateTime.Now, ReturnDate=null});
+            foreach (var rental in rentalManager.GetAll().Data)
             {
-                Console.WriteLine(car.CarName);
+                Console.WriteLine(rental.CarId);
             }
 
-           
+
+
+
 
         }
-        
-        
+
+
     }
 }
